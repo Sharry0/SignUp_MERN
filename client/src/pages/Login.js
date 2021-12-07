@@ -59,7 +59,9 @@ const Login = () => {
                     />
                 </FormControl>
             </div>
-
+            <div className="text-center mt-3"> 
+                <Button variant="contained">Login</Button>
+            </div>
         </div>
     )
 }
