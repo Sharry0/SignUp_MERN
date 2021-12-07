@@ -33,6 +33,7 @@ const Login = () => {
                     variant="outlined"
                     className="form-control"
                     label="Email"
+                    onChange={handleLogin}
                 />
             </div>
             <div className="form-group">
@@ -60,7 +61,7 @@ const Login = () => {
                 </FormControl>
             </div>
             <div className="text-center mt-3"> 
-                <Button variant="contained">Login</Button>
+                <Button variant="contained" disabled={!login || !pw}>Login</Button>
             </div>
         </div>
     )
