@@ -3,7 +3,7 @@ import React from 'react'
 // Hooks
 import useInputState from '../hooks/useInputState'
 import useToggleState from "../hooks/useToggleState"
-// MUI components
+// MUI components import all one by one !!!!!!!_____________
 import {
     TextField,
     InputAdornment,
@@ -33,6 +33,7 @@ const Login = () => {
                     variant="outlined"
                     className="form-control"
                     label="Email"
+                    value={login}
                     onChange={handleLogin}
                 />
             </div>
