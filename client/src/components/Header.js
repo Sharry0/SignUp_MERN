@@ -2,7 +2,6 @@
 import React from 'react'
 import {NavLink} from "react-router-dom"
 // MUI Icons
-import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import CategoryIcon from '@mui/icons-material/Category';
 
 const Header = () => {
