@@ -17,27 +17,40 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Signup = () => {
-    const [signup, handleSignup, resetSignup] = useInputState("")
+    const [username, handleUsername, resetUsername] = useInputState("")
+    const [email, handleEmail, resetEmail] = useInputState("")
     const [pw, handlePw, resetPw] = useInputState("")
+    const [confirmPw, handleConfirmPw, resetConfirmPw] = useInputState("")
     const [showPw, toggleShowPw] = useToggleState(false)
 
     return (
         <div>
-            {/* ______________Enter Username______________ */}
-            
-            {/* ______________Enter e-mail______________ */}
             <div className="container my-5 col-10 col-sm-8 col-md-6 col-lg-5">
                 <div className="text-center mb-5 alert alert-primary">
                     <label htmlFor="" className="h2">Registation</label>
                 </div>
+            {/* ______________Enter Username______________ */}
+            <div className="form-group">
+                    <TextField
+                        size="small"
+                        variant="outlined"
+                        className="form-control"
+                        label="Username"
+                        value={username}
+                        onChange={handleUsername}
+                        sx={{ my: 1 }}
+                    />
+                </div>
+            {/* ______________Enter e-mail______________ */}
                 <div className="form-group">
                     <TextField
                         size="small"
                         variant="outlined"
                         className="form-control"
                         label="Email"
-                        value={signup}
-                        onChange={handleSignup}
+                        value={email}
+                        onChange={handleEmail}
+                        sx={{ my: 1 }}
                     />
                 </div>
                 {/* ______________Enter Password______________ */}
@@ -74,27 +87,15 @@ const Signup = () => {
                         <OutlinedInput
                             id="outlined-adornment-password"
                             type={showPw ? 'text' : 'password'}
-                            value={pw}
-                            onChange={handlePw}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={toggleShowPw}
-                                        // onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            label="Password"
+                            value={confirmPw}
+                            onChange={handleConfirmPw}
+                            label="Confirm Password"
                         />
                     </FormControl>
                 </div>
                 {/* ______________Submit Button______________ */}
                 <div className="text-center mt-3">
-                    <Button variant="contained" disabled={!signup || !pw}>sign up</Button>
+                    <Button variant="contained" disabled={!username || !email || !pw || !confirmPw}>sign up</Button>
                 </div>
             </div>
         </div>

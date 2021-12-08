@@ -17,7 +17,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
-    const [login, handleLogin, resetLogin] = useInputState("")
+    const [email, handleEmail, resetEmail] = useInputState("")
     const [pw, handlePw, resetPw] = useInputState("")
     const [showPw, toggleShowPw] = useToggleState(false)
 
@@ -32,8 +32,8 @@ const Login = () => {
                     variant="outlined"
                     className="form-control"
                     label="Email"
-                    value={login}
-                    onChange={handleLogin}
+                    value={email}
+                    onChange={handleEmail}
                 />
             </div>
             <div className="form-group">
@@ -61,7 +61,7 @@ const Login = () => {
                 </FormControl>
             </div>
             <div className="text-center mt-3"> 
-                <Button variant="contained" disabled={!login || !pw}>Login</Button>
+                <Button variant="contained" disabled={!email || !pw}>Login</Button>
             </div>
         </div>
     )
