@@ -88,7 +88,7 @@ const Signup = () => {
                 </div>
                 {/* ______________Validate Password______________ */}
                 {pw &&
-                    <div className="ml-1" style={{ columns: 2 }}>
+                    <div className="ms-3 mb-3" style={{ columns: 2 }}>
                         <div>
                             <small className={hasSixChar ? "text-success" : "text-danger"}>
                                 at least 6 chaacters
@@ -130,7 +130,7 @@ const Signup = () => {
                     {pw && confirmPw && (
                         <FormHelperText>
                             {pw === confirmPw ? <span className="text-success">Password matches</span>
-                                : <span className="text-danger"> Password doesn't match</span>
+                                : <span className="text-danger ms-3"> Password doesn't match</span>
                             }
                         </FormHelperText>
                     )}
