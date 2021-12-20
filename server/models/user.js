@@ -1,6 +1,8 @@
 
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
+const crypto = require("crypto")
+const uuidv1 = require("uuidv1")
 
 const userSchema = new mongoose.Schema(
     {
@@ -31,7 +33,14 @@ const userSchema = new mongoose.Schema(
 
 // _________virtual field_________
 userSchema.virtual("password").set(function(password){
-   this.hashedPassword = this.encryptPassword(password)
+   //create temp variable called _password
+    this._password = password;
+
+    // generate a timestamp, uuidv1 gives us the unix timestamp
+    this.salt = uuidv1();
+
+    //encrpt the password function call 
+    this.hashedPassword = this.encryptPassword(password)
 });
 
 
@@ -40,13 +49,16 @@ userSchema.methods = {
         if (!password) return "";
 
         try {
-            return bcrypt.hash(password, 12);
+            return crypto
+                .createHmac('sha256', this.salt)
+                .update(password)
+                .digest('hex')
         } catch (err) {
             return ""
         }
     },
     authenticate: function (plainText){
-        return bcrypt.compare(plainText, this.hashedPassword)
+        return this.encryptPassword(plainText) === this.hashedPassword
     }
 }
 

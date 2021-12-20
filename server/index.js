@@ -10,6 +10,9 @@ const mongoose = require("mongoose")
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const express = require('express');
+const { json, urlencoded } = express;
+const cookieParser = require("cookie-parser");
+const expressValidator = require("express-validator");
 
 // __________app____________
 const app = express();
@@ -24,14 +27,16 @@ mongoose.connect(process.env.DB_URI, {
     .then(() => console.log("DB Connected"))
     .catch(err => console.log("DB Connection error", err))
 // __________midleware____________
+app.use(morgan("dev"));
+app.use(cors({ origin: true, credentials: true }));
+app.use(json());
+app.use(urlencoded({extended: false}))
+app.use(cookieParser());
+app.use(expressValidator())
 
 // __________routes____________
-// app.get('/', function (req, res) {
-//     res.send('Hello the Wörld')
-// })
-
-const testRoutes = require("./routes/test")
-app.use("/", testRoutes)
+const userRoutes = require("./routes/user")
+app.use("/", userRoutes)
 
 app.all("*", (req, res) => {
     res.send("Sorry, we couldn't find this website")
