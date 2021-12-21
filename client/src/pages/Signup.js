@@ -1,8 +1,9 @@
 
 import React from 'react'
 // Hooks
-import useInputState from '../hooks/useInputState'
-import useToggleState from "../hooks/useToggleState"
+import {useNavigate} from "react-router-dom";
+import useInputState from '../hooks/useInputState';
+import useToggleState from "../hooks/useToggleState";
 // MUI components 
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -16,21 +17,47 @@ import FormHelperText from '@mui/material/FormHelperText';
 // MUI Icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+
+// API Functions
+import {register} from "../API/user";
+
+if (process.env.NODE_ENV !== "production") {
+    // require("dotenv").config({ path: "./config/.env" })
+    
+};
 
 const Signup = () => {
+    const navigate = useNavigate();
     // form states 
     const [username, handleUsername, resetUsername] = useInputState("");
     const [email, handleEmail, resetEmail] = useInputState("");
-    const [pw, handlePw, resetPw] = useInputState("");
+    const [password, handlePw, resetPw] = useInputState("");
     const [confirmPw, handleConfirmPw, resetConfirmPw] = useInputState("");
     const [showPw, toggleShowPw] = useToggleState(false);
 
     //password validators
-    const hasSixChar = pw.length >= 6;
-    const hasLowerChar = /(.*[a-z].*)/.test(pw);
-    const hasUpperChar = /(.*[A-Z].*)/.test(pw);
-    const hasNum = /(.*[0-9].*)/.test(pw);
-    const hasSpecialChar = /(.*[^a-zA-Z0-9].*)/.test(pw);
+    const hasSixChar = password.length >= 6;
+    const hasLowerChar = /(.*[a-z].*)/.test(password);
+    const hasUpperChar = /(.*[A-Z].*)/.test(password);
+    const hasNum = /(.*[0-9].*)/.test(password);
+    const hasSpecialChar = /(.*[^a-zA-Z0-9].*)/.test(password);
+
+    const handleRegister = async (evt) =>{
+        evt.preventDefault();
+        try {
+            const res = await register({username, email, password})
+            if(res.error) alert(" if befor else",res.error)
+            else{
+                alert("else",res.message)
+                //redirect the user to login
+                navigate.replace("/login")
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     return (
         <div>
@@ -68,7 +95,7 @@ const Signup = () => {
                         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                         <OutlinedInput
                             type={showPw ? 'text' : 'password'}
-                            value={pw}
+                            value={password}
                             onChange={handlePw}
                             endAdornment={
                                 <InputAdornment position="end">
@@ -87,30 +114,50 @@ const Signup = () => {
                     </FormControl>
                 </div>
                 {/* ______________Validate Password______________ */}
-                {pw &&
+                {password &&
                     <div className="ms-3 mb-3" style={{ columns: 2 }}>
                         <div>
                             <small className={hasSixChar ? "text-success" : "text-danger"}>
+                                {hasSixChar ?
+                                    <CheckCircleIcon sx={{ mr: 1 }} />
+                                    : <CancelIcon sx={{ mr: 1 }} />
+                                }
                                 at least 6 chaacters
                             </small>
                         </div>
                         <div>
                             <small className={hasLowerChar ? "text-success" : "text-danger"}>
+                                {hasLowerChar ?
+                                    <CheckCircleIcon sx={{ mr: 1 }} />
+                                    : <CancelIcon sx={{ mr: 1 }} />
+                                }
                                 one lowercase letter
                             </small>
                         </div>
                         <div>
                             <small className={hasUpperChar ? "text-success" : "text-danger"}>
+                            {hasUpperChar ?
+                                    <CheckCircleIcon  sx={{mr: 1}}/>
+                                    : <CancelIcon sx={{mr: 1}} />
+                                }
                                 one uppercase letter
                             </small>
                         </div>
                         <div>
                             <small className={hasNum ? "text-success" : "text-danger"}>
+                            {hasNum ?
+                                    <CheckCircleIcon  sx={{mr: 1}}/>
+                                    : <CancelIcon sx={{mr: 1}} />
+                                }
                                 has one number
                             </small>
                         </div>
                         <div>
                             <small className={hasSpecialChar ? "text-success" : "text-danger"}>
+                            {hasSpecialChar ?
+                                    <CheckCircleIcon  sx={{mr: 1}}/>
+                                    : <CancelIcon sx={{mr: 1}} />
+                                }
                                 has one Symbol
                             </small>
                         </div>
@@ -127,9 +174,9 @@ const Signup = () => {
                             label="Confirm Password"
                         />
                     </FormControl>
-                    {pw && confirmPw && (
+                    {password && confirmPw && (
                         <FormHelperText>
-                            {pw === confirmPw ? <span className="text-success">Password matches</span>
+                            {password === confirmPw ? <span className="text-success">Password matches</span>
                                 : <span className="text-danger ms-3"> Password doesn't match</span>
                             }
                         </FormHelperText>
@@ -140,12 +187,14 @@ const Signup = () => {
                     <Button
                         variant="contained"
                         disabled={
-                            !username || !email || !pw || !confirmPw ||
-                            pw !== confirmPw ||
+                            !username || !email || !password || !confirmPw ||
+                            password !== confirmPw ||
                             !hasSixChar || !hasLowerChar || !hasUpperChar ||
                             !hasNum || !hasSpecialChar
                         }
-                        onClick={console.log(pw, confirmPw)}
+                        onClick={
+                            handleRegister
+                        }
                     >
                         sign up
                     </Button>

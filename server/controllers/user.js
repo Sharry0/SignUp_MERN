@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== "production") {
     require("dotenv").config({ path: "../config/.env" })
 };
 
-exports.register = async (req, res) =>{
+exports.register = async (req, res) => {
     //check if user already exists
     const usernameExist = await User.findOne({
         username: req.body.username
@@ -13,12 +13,12 @@ exports.register = async (req, res) =>{
     const emailExist = await User.findOne({
         email: req.body.email
     })
-    if(usernameExist){
+    if (usernameExist) {
         return res.status(403).json({
             error: "Username is taken"
         })
     }
-    if(emailExist){
+    if (emailExist) {
         return res.status(403).json({
             error: "Email is taken"
         })
@@ -33,35 +33,35 @@ exports.register = async (req, res) =>{
     })
 }
 
-exports.login = async (req, res) =>{
+exports.login = async (req, res) => {
 
     // find user based on email
-    const {email, password} = req.body
+    const { email, password } = req.body
 
-    await User.findOne({email}).exec((err, user)=>{
+    await User.findOne({ email }).exec((err, user) => {
         //if error or no user
-        if(err || !user){
+        if (err || !user) {
             return res.status(401).json({
                 error: "Invalid Credentials"
             })
         }
         // if user is found, we use the authenticate method from model
-        if(!user.authenticate(password)){
+        if (!user.authenticate(password)) {
             return res.status(401).json({
                 error: "Invalid email or password"
             })
         }
 
         // generate a token with user id and jwt secret
-        const token = jwt.sign({ _id: user._id}, process.env.JWT_SECRET,{
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "24h"
         })
 
         // presist the token as "jwt" in cookie with an expire date
-        res.cookie("jwt", token, {expire: new Date() + 9999, httpOnly: true});
+        res.cookie("jwt", token, { expire: new Date() + 9999, httpOnly: true });
 
         //return the response with the user
-        const {username } = user;
+        const { username } = user;
         return res.json({
             message: "Login successful",
             username
@@ -69,7 +69,7 @@ exports.login = async (req, res) =>{
     })
 }
 
-exports.logout = (req, res) =>{
+exports.logout =  (req, res) => {
     //clear cookie
     res.clearCookie("jwt");
 
@@ -78,8 +78,8 @@ exports.logout = (req, res) =>{
     })
 }
 
-exports.getLoggedInUser = (req, res)=>{
-    const {username}= req.user
+exports.getLoggedInUser = (req, res) => {
+    const { username } = req.user
     return res.status(200).json({
         message: "User is still logged in",
         username
