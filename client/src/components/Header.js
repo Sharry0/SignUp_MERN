@@ -1,6 +1,7 @@
 
-import React from 'react'
+import React, { useContext } from 'react'
 // Hooks
+import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom"
 // Components
@@ -12,7 +13,7 @@ import { logout } from "../API/user";
 
 const Header = () => {
     const navigate = useNavigate();
-
+    const { user, setUser } = useContext(UserContext);
     const handleLogout = (evt) => {
         evt.preventDefault();
         logout().then((res) => {
@@ -25,7 +26,7 @@ const Header = () => {
                 draggable: true,
                 progress: undefined,
             });
-            console.log(res)
+            setUser(null)
             navigate("/login")
         }).catch((error) => {
             console.log(error)
@@ -44,15 +45,20 @@ const Header = () => {
                             <NavLink className="nav-link fw-bold fs-6" to="/">Home</NavLink>
                         </div>
                         <div className="navbar-nav ms-auto">
-                            <NavLink className="nav-link fw-bold fs-6" to="/login">Log in</NavLink>
-                            <NavLink className="nav-link fw-bold fs-6" to="/signup">Sign up</NavLink>
-                            <span
-                                className="nav-link fw-bold fs-6 "
-                                style={{ cursor: "pointer" }}
-                                onClick={handleLogout}
-                            >
-                                Log out
-                            </span>
+                            {!user ?
+                                <>
+                                    <NavLink className="nav-link fw-bold fs-6" to="/login">Log in</NavLink>
+                                    <NavLink className="nav-link fw-bold fs-6" to="/signup">Sign up</NavLink>
+                                </> : <>
+                                    <span
+                                        className="nav-link fw-bold fs-6 "
+                                        style={{ cursor: "pointer" }}
+                                        onClick={handleLogout}
+                                    >
+                                        Log out
+                                    </span>
+                                </>
+                            }
                         </div>
                     </div>
                 </div>

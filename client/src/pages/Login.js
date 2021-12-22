@@ -1,6 +1,7 @@
 
-import React from 'react'
+import React, {useContext} from 'react'
 // Hooks
+import { UserContext } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 import useInputState from '../hooks/useInputState'
 import useToggleState from "../hooks/useToggleState"
@@ -22,6 +23,7 @@ import { login } from "../API/user";
 
 const Login = () => {
     const navigate = useNavigate();
+    const {setUser} = useContext(UserContext)
     // form states 
     const [email, handleEmail, resetEmail] = useInputState("")
     const [password, handlePw, resetPw] = useInputState("")
@@ -54,6 +56,7 @@ const Login = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                setUser(res.username)
                 // alert(res.message)
                 //redirect the user to login
                 navigate("/")
