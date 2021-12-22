@@ -1,10 +1,36 @@
 
 import React from 'react'
-import {NavLink} from "react-router-dom"
+// Hooks
+import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom"
+// Components
+import { toast } from 'react-toastify';
 // MUI Icons
 import CategoryIcon from '@mui/icons-material/Category';
+// API Functions
+import { logout } from "../API/user";
 
 const Header = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = (evt) => {
+        evt.preventDefault();
+        logout().then((res) => {
+            toast.success(res.message, {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            console.log(res)
+            navigate("/login")
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -18,11 +44,15 @@ const Header = () => {
                             <NavLink className="nav-link fw-bold fs-6" to="/">Home</NavLink>
                         </div>
                         <div className="navbar-nav ms-auto">
-                            {/* <NavLink className="nav-link" to="/">Home</NavLink> */}
-                            
                             <NavLink className="nav-link fw-bold fs-6" to="/login">Log in</NavLink>
                             <NavLink className="nav-link fw-bold fs-6" to="/signup">Sign up</NavLink>
-                            
+                            <span
+                                className="nav-link fw-bold fs-6 "
+                                style={{ cursor: "pointer" }}
+                                onClick={handleLogout}
+                            >
+                                Log out
+                            </span>
                         </div>
                     </div>
                 </div>

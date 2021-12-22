@@ -21,7 +21,13 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { login } from "../API/user";
 
 const Login = () => {
-    const handleLogin = (evt) => {
+    const navigate = useNavigate();
+    // form states 
+    const [email, handleEmail, resetEmail] = useInputState("")
+    const [password, handlePw, resetPw] = useInputState("")
+    const [showPw, toggleShowPw] = useToggleState(false)
+
+    const handleLogin = async (evt) => {
         evt.preventDefault();
         try {
             const res = await login({  email, password })
@@ -50,7 +56,7 @@ const Login = () => {
                 });
                 // alert(res.message)
                 //redirect the user to login
-                navigate("/login")
+                navigate("/")
             }
         } catch (error) {
             toast.error(error, {
@@ -65,9 +71,6 @@ const Login = () => {
             // alert(error)
         }
     }
-    const [email, handleEmail, resetEmail] = useInputState("")
-    const [pw, handlePw, resetPw] = useInputState("")
-    const [showPw, toggleShowPw] = useToggleState(false)
 
     return (
         <div className="container my-5 col-10 col-sm-8 col-md-6 col-lg-5">
@@ -90,7 +93,7 @@ const Login = () => {
                     <OutlinedInput
                         id="outlined-adornment-password"
                         type={showPw ? 'text' : 'password'}
-                        value={pw}
+                        value={password}
                         onChange={handlePw}
                         endAdornment={
                             <InputAdornment position="end">
@@ -111,7 +114,7 @@ const Login = () => {
             <div className="text-center mt-3">
                 <Button 
                 variant="contained" 
-                disabled={!email || !pw}
+                disabled={!email || !password}
                 onClick={handleLogin}
                 >
                     Login
