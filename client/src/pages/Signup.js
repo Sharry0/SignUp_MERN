@@ -1,9 +1,12 @@
 
 import React from 'react'
 // Hooks
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useInputState from '../hooks/useInputState';
 import useToggleState from "../hooks/useToggleState";
+// Compnents
+import { toast } from 'react-toastify';
+
 // MUI components 
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -13,19 +16,17 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
-
 // MUI Icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-
 // API Functions
-import {register} from "../API/user";
+import { register } from "../API/user";
 
 if (process.env.NODE_ENV !== "production") {
     // require("dotenv").config({ path: "./config/.env" })
-    
+
 };
 
 const Signup = () => {
@@ -44,18 +45,48 @@ const Signup = () => {
     const hasNum = /(.*[0-9].*)/.test(password);
     const hasSpecialChar = /(.*[^a-zA-Z0-9].*)/.test(password);
 
-    const handleRegister = async (evt) =>{
+    const handleRegister = async (evt) => {
         evt.preventDefault();
         try {
-            const res = await register({username, email, password})
-            if(res.error) alert(" if befor else",res.error)
-            else{
-                alert("else",res.message)
+            const res = await register({ username, email, password })
+            if (res.error) {
+                toast.error(res.error, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                // toast.error(res.error)
+                // console.log(res.error)
+            }
+            else {
+                toast.success(res.message, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                // alert(res.message)
                 //redirect the user to login
-                navigate.replace("/login")
+                navigate("/login")
             }
         } catch (error) {
-            alert(error)
+            toast.error(error, {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            // alert(error)
         }
     }
 
@@ -136,27 +167,27 @@ const Signup = () => {
                         </div>
                         <div>
                             <small className={hasUpperChar ? "text-success" : "text-danger"}>
-                            {hasUpperChar ?
-                                    <CheckCircleIcon  sx={{mr: 1}}/>
-                                    : <CancelIcon sx={{mr: 1}} />
+                                {hasUpperChar ?
+                                    <CheckCircleIcon sx={{ mr: 1 }} />
+                                    : <CancelIcon sx={{ mr: 1 }} />
                                 }
                                 one uppercase letter
                             </small>
                         </div>
                         <div>
                             <small className={hasNum ? "text-success" : "text-danger"}>
-                            {hasNum ?
-                                    <CheckCircleIcon  sx={{mr: 1}}/>
-                                    : <CancelIcon sx={{mr: 1}} />
+                                {hasNum ?
+                                    <CheckCircleIcon sx={{ mr: 1 }} />
+                                    : <CancelIcon sx={{ mr: 1 }} />
                                 }
                                 has one number
                             </small>
                         </div>
                         <div>
                             <small className={hasSpecialChar ? "text-success" : "text-danger"}>
-                            {hasSpecialChar ?
-                                    <CheckCircleIcon  sx={{mr: 1}}/>
-                                    : <CancelIcon sx={{mr: 1}} />
+                                {hasSpecialChar ?
+                                    <CheckCircleIcon sx={{ mr: 1 }} />
+                                    : <CancelIcon sx={{ mr: 1 }} />
                                 }
                                 has one Symbol
                             </small>

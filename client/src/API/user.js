@@ -10,7 +10,6 @@ export const register = async ({ username, email, password } = {}) => {
             },
             body: JSON.stringify(user)
         })
-
         return await res.json();
 
     } catch (error) {
