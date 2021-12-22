@@ -1,6 +1,6 @@
 
-import { useState } from "react"
-import { Routes, Route, Redirect } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { Routes, Route, Navigate } from "react-router-dom"
 //components
 import Home from "./pages/Home"
 import Login from "./pages/Login"
@@ -9,12 +9,23 @@ import Header from "./components/Header"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "./UserContext"
+//API Functions
+import { getUser } from "./API/user"
 
 function App() {
   const [user, setUser] = useState(null)
+  // keeping the username after every refresh
+  useEffect(() => {
+    const unsubscribe = getUser().then((res) => {
+      if (res.error) toast(res.error)
+      else setUser(res.username)
+    }).catch((error) => toast(error))
+    return () => unsubscribe
+  }, [])
+
   return (
     <div >
-      <UserContext.Provider value={{user, setUser}}>
+      <UserContext.Provider value={{ user, setUser }}>
         <Header />
         <ToastContainer
           position="bottom-right"
@@ -27,6 +38,8 @@ function App() {
           draggable
           pauseOnHover
         />
+        {/* <Navigate to={user ? "/" : "/login"} /> */}
+        {user ? console.log(user): console.log("no user")}
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/login" element={<Login />} />

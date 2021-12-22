@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React,{useState} from 'react'
 // Hooks
 import { useNavigate } from "react-router-dom";
 import useInputState from '../hooks/useInputState';
@@ -24,10 +24,6 @@ import CancelIcon from '@mui/icons-material/Cancel';
 // API Functions
 import { register } from "../API/user";
 
-if (process.env.NODE_ENV !== "production") {
-    // require("dotenv").config({ path: "./config/.env" })
-
-};
 
 const Signup = () => {
     const navigate = useNavigate();

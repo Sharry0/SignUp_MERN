@@ -28,7 +28,6 @@ const Login = () => {
     const [email, handleEmail, resetEmail] = useInputState("")
     const [password, handlePw, resetPw] = useInputState("")
     const [showPw, toggleShowPw] = useToggleState(false)
-
     const handleLogin = async (evt) => {
         evt.preventDefault();
         try {
